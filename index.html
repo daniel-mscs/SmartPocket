@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartPocket</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <meta name="theme-color" content="#121212" />
+</head>
+<body>
+  <header>
+    <div class="header-top">
+      <h3>SmartPocket 💰</h3>
+      
+      <!-- NOVO DROPDOWN CUSTOMIZADO -->
+      <div class="custom-select" id="mes-dropdown">
+        <div class="select-trigger">
+          <span id="mes-selecionado">Janeiro</span>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="select-options" id="mes-options">
+          <div class="option" data-value="0">Janeiro</div>
+          <div class="option" data-value="1">Fevereiro</div>
+          <div class="option" data-value="2">Março</div>
+          <div class="option" data-value="3">Abril</div>
+          <div class="option" data-value="4">Maio</div>
+          <div class="option" data-value="5">Junho</div>
+          <div class="option" data-value="6">Julho</div>
+          <div class="option" data-value="7">Agosto</div>
+          <div class="option" data-value="8">Setembro</div>
+          <div class="option" data-value="9">Outubro</div>
+          <div class="option" data-value="10">Novembro</div>
+          <div class="option" data-value="11">Dezembro</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tabs-bar">
+      <button class="tab-btn active" data-tab="gastos"><i class="fas fa-file-invoice-dollar"></i><span>Gastos</span></button>
+      <button class="tab-btn" data-tab="cartao"><i class="fas fa-credit-card"></i><span>Cartão</span></button>
+      <button class="tab-btn" data-tab="invest"><i class="fas fa-chart-line"></i><span>Invest</span></button>
+      <button class="tab-btn" data-tab="entradas"><i class="fas fa-wallet"></i><span>Entradas</span></button>
+      <button class="tab-btn" data-tab="resumo"><i class="fas fa-calculator"></i><span>Resumo</span></button>
+      <button class="tab-btn" data-tab="tutorial"><i class="fas fa-question-circle"></i><span>Ajuda</span></button>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- ABA GASTOS -->
+    <section id="gastos" class="tab-content active">
+      <div class="card">
+        <h4>💸 Adicionar Gasto</h4>
+        <input type="text" id="gasto-nome" placeholder="Descrição (ex: Aluguel)" />
+        <input type="number" id="gasto-real" placeholder="Valor R$" />
+        <label style="color:#888; font-size:13px; margin: 10px 0 2px 5px; display:block;">📅 Dia do pagamento</label>
+        <input type="date" id="gasto-data" />
+        <button class="btn-add" onclick="adicionarGasto()"><i class="fas fa-plus"></i> Adicionar Gasto</button>
+      </div>
+      <ul id="lista-gastos" class="item-list"></ul>
+    </section>
+
+    <!-- ABA CARTÃO -->
+    <section id="cartao" class="tab-content">
+      <div class="card">
+        <h4>💳 Lançar no Cartão</h4>
+        <input type="text" id="cartao-item" placeholder="O que comprou?" />
+        <input type="number" id="cartao-valor" placeholder="Valor R$" />
+        <button class="btn-add" onclick="adicionarCartao()"><i class="fas fa-plus"></i> Lançar no Cartão</button>
+      </div>
+      <ul id="lista-cartao" class="item-list"></ul>
+    </section>
+
+    <!-- ABA INVESTIMENTOS -->
+    <section id="invest" class="tab-content">
+      <div class="card">
+        <h4>📈 Registrar Investimento</h4>
+        <select id="invest-tipo">
+          <option value="Caixinha">Caixinha / CDB</option>
+          <option value="Bolsa">Bolsa de Valores</option>
+          <option value="Reserva">Reserva de Emergência</option>
+        </select>
+        <input type="number" id="invest-valor" placeholder="Valor R$" />
+        <button class="btn-add" onclick="adicionarInvest()"><i class="fas fa-plus"></i> Salvar Investimento</button>
+      </div>
+      <ul id="lista-invest" class="item-list"></ul>
+    </section>
+
+    <!-- ABA ENTRADAS -->
+    <section id="entradas" class="tab-content">
+      <div class="card">
+        <h4>💰 Registrar Entrada</h4>
+        <input type="text" id="entrada-nome" placeholder="Origem (ex: Salário)" />
+        <input type="number" id="entrada-valor" placeholder="Valor R$" />
+        <button class="btn-add" onclick="adicionarEntrada()"><i class="fas fa-plus"></i> Adicionar Entrada</button>
+      </div>
+      <ul id="lista-entradas" class="item-list"></ul>
+    </section>
+
+    <!-- ABA RESUMO -->
+    <section id="resumo" class="tab-content">
+      <div class="summary-card">
+        <p class="summary-label">Balanço do Mês</p>
+        <h2 id="resultado-final">R$ 0,00</h2>
+        <hr class="summary-divider" />
+        <div id="detalhes-resumo"></div>
+      </div>
+      <button class="btn-add" style="margin-top: 20px;" onclick="calcularTudo()"><i class="fas fa-sync-alt"></i> Calcular Balanço Total</button>
+    </section>
+
+    <!-- ABA TUTORIAL -->
+    <section id="tutorial" class="tab-content">
+      <div class="card">
+        <h4>📖 Como usar o SmartPocket 💰</h4>
+        <div class="tutorial-item">
+          <p class="tutorial-titulo">💸 Gastos</p>
+          <p class="tutorial-texto">Registre suas contas fixas ou variáveis do mês. Coloque a descrição, o valor e o dia que foi pago.</p>
+        </div>
+        <div class="tutorial-item">
+          <p class="tutorial-titulo">💳 Cartão de Crédito</p>
+          <p class="tutorial-texto">Controle exclusivo para compras no crédito. Coloque o que comprou e o valor.</p>
+        </div>
+        <div class="tutorial-item">
+          <p class="tutorial-titulo">📈 Investimentos</p>
+          <p class="tutorial-texto">Registre o que você investiu ou poupou no mês. Ex: Caixinha, Bolsa, Reserva.</p>
+        </div>
+        <div class="tutorial-item">
+          <p class="tutorial-titulo">💰 Entradas</p>
+          <p class="tutorial-texto">Aqui entra tudo que você recebeu: salário, freelas, vendas.</p>
+        </div>
+        <div class="tutorial-item">
+          <p class="tutorial-titulo">📊 Resumo</p>
+          <p class="tutorial-texto">Clique em "Calcular Balanço Total" para ver o saldo final e o extrato detalhado.</p>
+        </div>
+        <div class="tutorial-dica">💡 <strong>Dica:</strong> Troque o mês no topo para ver ou registrar dados de outros meses.</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="assinatura">
+    <p>Desenvolvido por <strong>Daniel</strong></p>
+    <div class="social-links">
+      <a href="https://www.instagram.com/daniel.mscs/" target="_blank"><i class="fab fa-instagram"></i></a>
+      <a href="https://github.com/daniel-mscs" target="_blank"><i class="fab fa-github"></i></a>
+    </div>
+  </footer>
+
+  <button class="btn-reset" onclick="resetarTudo()"><i class="fas fa-trash"></i> Resetar</button>
+
+  <script src="script.js"></script>
+</body>
+</html>
