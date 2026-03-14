@@ -32,7 +32,7 @@ function marcarOpcaoSelecionada(index) {
   options.forEach(opt => opt.classList.toggle('selected', parseInt(opt.dataset.value) === index));
 }
 
-// Dados
+// ===== DADOS =====
 let todosDados = JSON.parse(localStorage.getItem('meuFinanceTracker')) || {};
 
 function getMes() {
@@ -55,7 +55,7 @@ function removerItem(categoria, id) {
   salvarDados();
 }
 
-// Abas
+// ===== ABAS =====
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -84,7 +84,7 @@ function configurarEnter(ids, funcao, focoApos) {
   });
 }
 
-// Adicionar itens
+// ===== ADICIONAR ITENS =====
 function adicionarGasto() {
   const nome = document.getElementById('gasto-nome').value.trim();
   const real = parseFloat(document.getElementById('gasto-real').value) || 0;
@@ -98,7 +98,7 @@ function adicionarGasto() {
 function adicionarCartao() {
   const item = document.getElementById('cartao-item').value.trim();
   const valor = parseFloat(document.getElementById('cartao-valor').value) || 0;
-  const data = new Date().toISOString().split('T')[0]; // salva internamente, sem mostrar
+  const data = new Date().toISOString().split('T')[0];
   if (!item || !valor) return alert('Preencha os campos!');
   getMes().cartao.push({ item, valor, data, id: Date.now() });
   limparInputs(['cartao-item', 'cartao-valor']);
@@ -123,7 +123,7 @@ function adicionarEntrada() {
   salvarDados();
 }
 
-// Renderização
+// ===== RENDERIZAÇÃO =====
 function formatarData(data) {
   if (!data) return 'Não informado';
   const [ano, mes, dia] = data.split('-');
@@ -147,7 +147,7 @@ function renderizarListas() {
         <button class="btn-del" onclick="removerItem('gastos', ${g.id})"><i class="fas fa-trash-alt"></i></button>
       </li>`).join('');
 
-  // Cartão — com data automática visível no card
+  // Cartão
   document.getElementById('lista-cartao').innerHTML = d.cartao.length === 0
     ? vazio('Nenhum lançamento no cartão.')
     : d.cartao.map(c => `
@@ -181,6 +181,7 @@ function renderizarListas() {
       </li>`).join('');
 }
 
+// ===== RESUMO =====
 function limparResumo() {
   const el = document.getElementById('resultado-final');
   el.innerText = 'R$ 0,00';
@@ -225,12 +226,14 @@ function calcularTudo() {
   html += `</div>`;
   document.getElementById('detalhes-resumo').innerHTML = html;
 
+  // Navega automaticamente para a aba Resumo
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
   document.querySelector('[data-tab="resumo"]').classList.add('active');
   document.getElementById('resumo').classList.add('active');
 }
 
+// ===== RESETAR =====
 function resetarTudo() {
   const opcao = confirm('🗑️ Resetar TODOS os meses?\n\nOK = apaga tudo\nCancelar = apaga só o mês atual');
   if (opcao) {
@@ -245,12 +248,18 @@ function resetarTudo() {
   alert('✅ Dados apagados!');
 }
 
-// Init
+// ===== INIT =====
 limparResumo();
 renderizarListas();
 
-// Configurar Enter (após funções definidas)
 configurarEnter(['gasto-nome', 'gasto-real', 'gasto-data'], adicionarGasto, 'gasto-nome');
 configurarEnter(['cartao-item', 'cartao-valor'], adicionarCartao, 'cartao-item');
 configurarEnter(['invest-valor'], adicionarInvest, 'invest-valor');
 configurarEnter(['entrada-nome', 'entrada-valor'], adicionarEntrada, 'entrada-nome');
+
+// ===== SERVICE WORKER (PWA) =====
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js');
+  });
+}

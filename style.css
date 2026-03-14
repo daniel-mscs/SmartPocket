@@ -7,7 +7,7 @@
   --danger: #ff5252;
   --warning: #ffab40;
   --text-main: #ffffff;
-  --text-dim: #888; 
+  --text-dim: #888;
   --border: #2a2a2a;
 }
 
@@ -43,11 +43,9 @@ header { position: fixed; top: 0; width: 100%; z-index: 1000; background: #0d0d0
 
 /* ===== ABAS ===== */
 .tabs-bar { display: flex; width: 100%; max-width: 750px; background: #0d0d0d; padding: 0 4px; gap: 3px; align-items: flex-end; overflow-x: auto; }
-
 .tabs-bar::-webkit-scrollbar { display: none; }
 
 .tab-btn { flex: 1; min-width: 48px; padding: 10px 2px 12px; border: none; border-radius: 10px 10px 0 0; background: var(--tab-inactive); color: var(--text-dim); font-size: 9px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; transition: all 0.2s ease; border-top: 2px solid transparent; white-space: nowrap; }
-
 .tab-btn i { font-size: 16px; }
 
 .tab-btn.active { background: var(--card-bg); color: var(--primary); border-top: 3px solid var(--primary); font-weight: 800; padding-bottom: 14px; }
@@ -77,9 +75,9 @@ input, select {
   font-size: 16px;
   outline: none;
   display: block;
+  appearance: none;
   -webkit-appearance: none;
   min-height: 48px;
-  color-scheme: dark;
 }
 
 input:focus, select:focus { border-color: var(--primary); }
@@ -123,7 +121,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 /* ===== LISTA ===== */
 .item-list { list-style: none; }
-
 .item-card { background: var(--card-bg); margin-bottom: 10px; padding: 14px 16px; border-radius: 12px; border-left: 4px solid var(--secondary); display: flex; justify-content: space-between; align-items: center; gap: 10px; }
 
 .item-info { flex: 1; }
@@ -139,7 +136,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .summary-card { background: linear-gradient(135deg, #1a1a2e, #16213e); padding: 30px 20px; border-radius: 18px; text-align: center; border: 1px solid var(--primary); margin-top: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
 
 .summary-label { color: var(--text-dim); font-size: 0.9rem; }
-
 .summary-card h2 { font-size: 2.8rem; color: var(--primary); margin: 12px 0; }
 
 .summary-divider { border: none; border-top: 1px solid #333; margin: 15px 0; }
@@ -190,7 +186,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .assinatura { text-align: center; padding: 40px 20px 100px; color: var(--text-dim); font-size: 14px; }
 
 .assinatura p { margin-bottom: 10px; opacity: 0.7; }
-
 .assinatura strong { color: var(--primary); }
 
 .social-links { display: flex; justify-content: center; gap: 20px; }
