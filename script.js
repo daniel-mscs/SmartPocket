@@ -73,24 +73,16 @@ function configurarEnter(ids, funcao, focoApos) {
     el.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         e.preventDefault();
-        // Se não é o último campo, vai pro próximo
         if (index < ids.length - 1) {
           document.getElementById(ids[index + 1])?.focus();
         } else {
-          // É o último campo: executa a função e volta pro primeiro
           funcao();
-          document.getElementById(focoApos)?.focus();
+          setTimeout(() => document.getElementById(focoApos)?.focus(), 50);
         }
       }
     });
   });
 }
-
-// Configurar Enter em cada aba
-configurarEnter(['gasto-nome', 'gasto-real', 'gasto-data'], adicionarGasto, 'gasto-nome');
-configurarEnter(['cartao-item', 'cartao-valor'], adicionarCartao, 'cartao-item');
-configurarEnter(['invest-valor'], adicionarInvest, 'invest-valor');
-configurarEnter(['entrada-nome', 'entrada-valor'], adicionarEntrada, 'entrada-nome');
 
 // Adicionar itens
 function adicionarGasto() {
@@ -106,7 +98,7 @@ function adicionarGasto() {
 function adicionarCartao() {
   const item = document.getElementById('cartao-item').value.trim();
   const valor = parseFloat(document.getElementById('cartao-valor').value) || 0;
-  const data = new Date().toISOString().split('T')[0]; // data automática, sem mostrar
+  const data = new Date().toISOString().split('T')[0]; // salva internamente, sem mostrar
   if (!item || !valor) return alert('Preencha os campos!');
   getMes().cartao.push({ item, valor, data, id: Date.now() });
   limparInputs(['cartao-item', 'cartao-valor']);
@@ -142,6 +134,7 @@ function renderizarListas() {
   const d = getMes();
   const vazio = (m) => `<p style="color:#666;text-align:center;padding:20px;">${m}</p>`;
 
+  // Gastos
   document.getElementById('lista-gastos').innerHTML = d.gastos.length === 0
     ? vazio('Nenhum gasto registrado.')
     : d.gastos.map(g => `
@@ -154,19 +147,20 @@ function renderizarListas() {
         <button class="btn-del" onclick="removerItem('gastos', ${g.id})"><i class="fas fa-trash-alt"></i></button>
       </li>`).join('');
 
-  // Cartão — sem data visível, só o nome e valor
+  // Cartão — com data automática visível no card
   document.getElementById('lista-cartao').innerHTML = d.cartao.length === 0
     ? vazio('Nenhum lançamento no cartão.')
     : d.cartao.map(c => `
       <li class="item-card" style="border-left-color:#ff5252;">
         <div class="item-info">
           <h5>${c.item}</h5>
-          <p><i class="fas fa-credit-card"></i> Crédito</p>
+          <p><i class="fas fa-credit-card"></i> Crédito • ${formatarData(c.data)}</p>
         </div>
         <div class="item-values"><span class="val-real" style="color:#ff5252;">R$ ${c.valor.toFixed(2)}</span></div>
         <button class="btn-del" onclick="removerItem('cartao', ${c.id})"><i class="fas fa-trash-alt"></i></button>
       </li>`).join('');
 
+  // Investimentos
   document.getElementById('lista-invest').innerHTML = d.investimentos.length === 0
     ? vazio('Nenhum investimento registrado.')
     : d.investimentos.map(i => `
@@ -176,6 +170,7 @@ function renderizarListas() {
         <button class="btn-del" onclick="removerItem('investimentos', ${i.id})"><i class="fas fa-trash-alt"></i></button>
       </li>`).join('');
 
+  // Entradas
   document.getElementById('lista-entradas').innerHTML = d.entradas.length === 0
     ? vazio('Nenhuma entrada registrada.')
     : d.entradas.map(e => `
@@ -214,10 +209,18 @@ function calcularTudo() {
       <p class="resumo-detalhado-titulo">📋 Extrato Detalhado</p>
   `;
 
-  d.gastos.forEach(g => { html += `<div class="resumo-item-pequeno"><span>💸 ${g.nome}</span><span>R$ ${g.real.toFixed(2)}</span></div>`; });
-  d.cartao.forEach(c => { html += `<div class="resumo-item-pequeno"><span>💳 ${c.item}</span><span>R$ ${c.valor.toFixed(2)}</span></div>`; });
-  d.investimentos.forEach(i => { html += `<div class="resumo-item-pequeno"><span>📈 ${i.tipo}</span><span>R$ ${i.valor.toFixed(2)}</span></div>`; });
-  d.entradas.forEach(e => { html += `<div class="resumo-item-pequeno"><span>💰 ${e.nome}</span><span style="color:#00e676;">+ R$ ${e.valor.toFixed(2)}</span></div>`; });
+  d.gastos.forEach(g => {
+    html += `<div class="resumo-item-pequeno"><span>💸 ${g.nome} (${formatarData(g.data)})</span><span>R$ ${g.real.toFixed(2)}</span></div>`;
+  });
+  d.cartao.forEach(c => {
+    html += `<div class="resumo-item-pequeno"><span>💳 ${c.item} (${formatarData(c.data)})</span><span>R$ ${c.valor.toFixed(2)}</span></div>`;
+  });
+  d.investimentos.forEach(i => {
+    html += `<div class="resumo-item-pequeno"><span>📈 ${i.tipo}</span><span>R$ ${i.valor.toFixed(2)}</span></div>`;
+  });
+  d.entradas.forEach(e => {
+    html += `<div class="resumo-item-pequeno"><span>💰 ${e.nome}</span><span style="color:#00e676;">+ R$ ${e.valor.toFixed(2)}</span></div>`;
+  });
 
   html += `</div>`;
   document.getElementById('detalhes-resumo').innerHTML = html;
@@ -246,7 +249,7 @@ function resetarTudo() {
 limparResumo();
 renderizarListas();
 
-// Configurar Enter (após funções estarem definidas)
+// Configurar Enter (após funções definidas)
 configurarEnter(['gasto-nome', 'gasto-real', 'gasto-data'], adicionarGasto, 'gasto-nome');
 configurarEnter(['cartao-item', 'cartao-valor'], adicionarCartao, 'cartao-item');
 configurarEnter(['invest-valor'], adicionarInvest, 'invest-valor');
