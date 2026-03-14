@@ -13,8 +13,6 @@
   <header>
     <div class="header-top">
       <h3>SmartPocket 💰</h3>
-      
-      <!-- NOVO DROPDOWN CUSTOMIZADO -->
       <div class="custom-select" id="mes-dropdown">
         <div class="select-trigger">
           <span id="mes-selecionado">Janeiro</span>
@@ -44,18 +42,22 @@
       <button class="tab-btn" data-tab="entradas"><i class="fas fa-wallet"></i><span>Entradas</span></button>
       <button class="tab-btn" data-tab="resumo"><i class="fas fa-calculator"></i><span>Resumo</span></button>
       <button class="tab-btn" data-tab="tutorial"><i class="fas fa-question-circle"></i><span>Ajuda</span></button>
+      <button class="tab-btn" data-tab="contato"><i class="fas fa-envelope"></i><span>Contato</span></button>
     </div>
   </header>
 
   <main class="container">
+
     <!-- ABA GASTOS -->
     <section id="gastos" class="tab-content active">
       <div class="card">
         <h4>💸 Adicionar Gasto</h4>
         <input type="text" id="gasto-nome" placeholder="Descrição (ex: Aluguel)" />
         <input type="number" id="gasto-real" placeholder="Valor R$" />
-        <label style="color:#888; font-size:13px; margin: 10px 0 2px 5px; display:block;">📅 Dia do pagamento</label>
-        <input type="date" id="gasto-data" />
+        <div class="input-group-data">
+          <label for="gasto-data">📅 Dia do pagamento</label>
+          <input type="date" id="gasto-data" />
+        </div>
         <button class="btn-add" onclick="adicionarGasto()"><i class="fas fa-plus"></i> Adicionar Gasto</button>
       </div>
       <ul id="lista-gastos" class="item-list"></ul>
@@ -67,6 +69,10 @@
         <h4>💳 Lançar no Cartão</h4>
         <input type="text" id="cartao-item" placeholder="O que comprou?" />
         <input type="number" id="cartao-valor" placeholder="Valor R$" />
+        <div class="input-group-data">
+          <label for="cartao-data">📅 Data da compra</label>
+          <input type="date" id="cartao-data" />
+        </div>
         <button class="btn-add" onclick="adicionarCartao()"><i class="fas fa-plus"></i> Lançar no Cartão</button>
       </div>
       <ul id="lista-cartao" class="item-list"></ul>
@@ -119,7 +125,7 @@
         </div>
         <div class="tutorial-item">
           <p class="tutorial-titulo">💳 Cartão de Crédito</p>
-          <p class="tutorial-texto">Controle exclusivo para compras no crédito. Coloque o que comprou e o valor.</p>
+          <p class="tutorial-texto">Controle exclusivo para compras no crédito. Coloque o que comprou, o valor e a data da compra.</p>
         </div>
         <div class="tutorial-item">
           <p class="tutorial-titulo">📈 Investimentos</p>
@@ -136,6 +142,31 @@
         <div class="tutorial-dica">💡 <strong>Dica:</strong> Troque o mês no topo para ver ou registrar dados de outros meses.</div>
       </div>
     </section>
+
+    <!-- ABA CONTATO -->
+    <section id="contato" class="tab-content">
+      <div class="card" style="text-align: center;">
+        <h4>🚀 Vamos Conversar?</h4>
+        <p style="font-size: 14px; color: #bbb; margin-bottom: 24px; line-height: 1.6;">Gostou do SmartPocket? Quer um projeto personalizado, tem uma sugestão ou encontrou um bug? Me chama! 👇</p>
+
+        <a href="https://wa.me/5555991975065?text=Olá%20Daniel,%20vi%20seu%20app%20SmartPocket%20e%20quero%20conversar!" target="_blank" class="btn-contato whatsapp">
+          <i class="fab fa-whatsapp"></i> Chamar no WhatsApp
+        </a>
+
+        <a href="https://www.linkedin.com/in/daniel-mscs/" target="_blank" class="btn-contato linkedin">
+          <i class="fab fa-linkedin"></i> Ver LinkedIn
+        </a>
+
+        <a href="mailto:daniel.mth1996@gmail.com?subject=Feedback%20SmartPocket" class="btn-contato email">
+          <i class="fas fa-bug"></i> Reportar Bug / Sugestão
+        </a>
+
+        <a href="https://github.com/daniel-mscs" target="_blank" class="btn-contato github">
+          <i class="fab fa-github"></i> Ver GitHub
+        </a>
+      </div>
+    </section>
+
   </main>
 
   <footer class="assinatura">
