@@ -233,19 +233,34 @@ function calcularTudo() {
   document.getElementById('resumo').classList.add('active');
 }
 
-// ===== RESETAR =====
+// ===== RESETAR (SEGURO) =====
 function resetarTudo() {
-  const opcao = confirm('🗑️ Resetar TODOS os meses?\n\nOK = apaga tudo\nCancelar = apaga só o mês atual');
-  if (opcao) {
+  // 1. Confirmação inicial — Cancelar aqui não faz NADA
+  const confirmarPrimeiro = confirm('⚠️ Você deseja apagar dados do SmartPocket?');
+  if (!confirmarPrimeiro) return;
+
+  // 2. Escolha o que apagar
+  const apagarTudo = confirm('🗑️ Escolha o tipo de limpeza:\n\nOK = Apagar TODOS os meses (Limpeza Total)\nCancelar = Apagar APENAS o mês atual');
+
+  if (apagarTudo) {
+    // 3a. Confirmação extra para limpeza total
+    const certezaAbsoluta = confirm('🚨 ATENÇÃO: Isso excluirá todos os dados de todos os meses permanentemente. Tem certeza?');
+    if (!certezaAbsoluta) return;
     localStorage.removeItem('meuFinanceTracker');
     todosDados = {};
+    alert('✅ Todos os dados foram resetados!');
   } else {
+    // 3b. Confirmação para apagar só o mês atual
+    const mesNome = nomesMeses[mesSelecionadoIndex];
+    const certezaMes = confirm(`Confirmar limpeza apenas de ${mesNome}?`);
+    if (!certezaMes) return;
     todosDados[mesSelecionadoIndex] = { gastos: [], cartao: [], investimentos: [], entradas: [] };
     localStorage.setItem('meuFinanceTracker', JSON.stringify(todosDados));
+    alert(`✅ Dados de ${mesNome} apagados!`);
   }
+
   renderizarListas();
   limparResumo();
-  alert('✅ Dados apagados!');
 }
 
 // ===== INIT =====
