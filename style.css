@@ -128,7 +128,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .item-info p { font-size: 0.75rem; color: var(--text-dim); }
 
 .item-values { text-align: right; }
-.val-real { color: var(--primary); font-weight: 900; font-size: 1.05rem; }
+.val-real { color: var(--danger); font-weight: 900; font-size: 1.05rem; }
 
 .btn-del { background: none; border: none; color: var(--danger); font-size: 1rem; cursor: pointer; padding: 4px 8px; border-radius: 8px; }
 
